@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {{ include('components/navbar.html') }}
+
+    <div class="container-v2">
+        <div class="register-box">
+            <p class="heading-text">Register</p>
+            <div class="messages">
+                {% if messages is defined %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <form action="register" method="POST">
+                <input name="first-name" type="text" placeholder="first name" required>
+                <input name="surname" type="text" placeholder="surname" required>
+                <input name="phone-number" type="text" placeholder="phone number" required>
+                <input name="email" type="text" placeholder="email address" required>
+                <input name="password" type="password" placeholder="password" required>
+                <input name="conf-password" type="password" placeholder="confirm password" required>
+                <div class="checkbox-container">
+                    <input class="checkbox" id="tos" name="tos" type="checkbox" required>
+                    <label for="tos">I agree with
+                        <a class="link" href="#">Terms and Conditions</a>
+                    </label>
+                </div>
+                <button class="signup" type="submit">Sign up</button>
+                <p>Already have an account?
+                    <a class="link" href="login">Login</a></p>
+
+            </form>
+        </div>
+    </div>
+
+    {{ include('components/footer.html') }}
+{% endblock %}

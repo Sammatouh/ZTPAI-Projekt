@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    {{ include('components/navbar.html') }}
+
+    <div class="container">
+        <div class="login-box">
+            <div class="login-container">
+                <p class="heading-text">Login</p>
+                <div class="messages">
+                    {% if messages is defined %}
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <form action="login" method="POST">
+                    <input name="email" type="text" placeholder="email address">
+                    <input name="password" type="password" placeholder="password">
+                    <button class="login" type="submit">Login</button>
+                </form>
+                <p>Don't have an account?<br>
+                    <a class="link" href="register">Sign up</a>
+                </p>
+                <a class="link" href="#">Forgot password?</a>
+            </div>
+        </div>
+    </div>
+
+    {{ include('components/footer.html') }}
+
+{% endblock %}
