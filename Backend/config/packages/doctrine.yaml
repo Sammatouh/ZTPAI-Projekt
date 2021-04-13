@@ -1,0 +1,25 @@
+doctrine:
+    dbal:
+        driver: pdo_pgsql
+        url: '%env(resolve:DATABASE_URL)%'
+        dbname: degrp1406pn072
+        host: ec2-52-50-171-4.eu-west-1.compute.amazonaws.com
+        port: 5432
+        user: inwuwzqinopavk
+        password: fc5853ce45111e733a43564e3ec29eba8eb3926b5d503fd94e49d6451a86e4c7
+        server-version: '13.2'
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '13'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
