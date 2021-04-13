@@ -10,19 +10,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/login")
-     */
-    public function login(): Response
-    {
-        return $this->render('login.html.twig');
-    }
-
-    /**
-     * @Route("/register")
-     */
-    public function register(): Response
-    {
-        return $this->render('register.html.twig');
-    }
+    // STAROŚĆ
+//    /**
+//     * @Route("/login")
+//     */
+//    public function login(): Response
+//    {
+//        return $this->render('login.html.twig');
+//    }
+//
+//    /**
+//     * @Route("/register")
+//     */
+//    public function register(): Response
+//    {
+//        return $this->render('register.html.twig');
+//    }
 }

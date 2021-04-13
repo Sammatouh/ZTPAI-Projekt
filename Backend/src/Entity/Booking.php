@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+// TODO
+// zrobić camelCase i pousuwać z nazw pól id
+
 /**
  * @ORM\Entity(repositoryClass=BookingRepository::class)
  */
