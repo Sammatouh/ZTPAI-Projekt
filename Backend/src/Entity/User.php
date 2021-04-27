@@ -2,16 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     normalizationContext={"groups"={"user:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"},
+ * )
+ * @UniqueEntity(fields={"email"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -21,53 +31,33 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"user:read", "user:write"})
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     * @Groups({"user:write"})
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\OneToMany(targetEntity=Rental::class, mappedBy="renter", orphanRemoval=true)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $surname;
-
-    /**
-     * @ORM\Column(type="string", length=22)
-     */
-    private $phone;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $avatar;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $join_time;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="id_user", orphanRemoval=true)
-     */
-    private $bookings;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Admin::class, mappedBy="id_user", cascade={"persist", "remove"})
-     */
-    private $admin;
+    private $rentals;
 
     public function __construct()
     {
-        $this->bookings = new ArrayCollection();
+        $this->rentals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,9 +77,41 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->password;
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -99,109 +121,52 @@ class User
         return $this;
     }
 
-    public function getName(): ?string
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getSurname(): ?string
-    {
-        return $this->surname;
-    }
-
-    public function setSurname(string $surname): self
-    {
-        $this->surname = $surname;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getAvatar(): ?string
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar(string $avatar): self
-    {
-        $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    public function getJoinTime(): ?\DateTimeInterface
-    {
-        return $this->join_time;
-    }
-
-    public function setJoinTime(\DateTimeInterface $join_time): self
-    {
-        $this->join_time = $join_time;
-
-        return $this;
+        return null;
     }
 
     /**
-     * @return Collection|Booking[]
+     * @see UserInterface
      */
-    public function getBookings(): Collection
+    public function eraseCredentials()
     {
-        return $this->bookings;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
-    public function addBooking(Booking $booking): self
+    /**
+     * @return Collection|Rental[]
+     */
+    public function getRentals(): Collection
     {
-        if (!$this->bookings->contains($booking)) {
-            $this->bookings[] = $booking;
-            $booking->setIdUser($this);
+        return $this->rentals;
+    }
+
+    public function addRental(Rental $rental): self
+    {
+        if (!$this->rentals->contains($rental)) {
+            $this->rentals[] = $rental;
+            $rental->setRenter($this);
         }
 
         return $this;
     }
 
-    public function removeBooking(Booking $booking): self
+    public function removeRental(Rental $rental): self
     {
-        if ($this->bookings->removeElement($booking)) {
+        if ($this->rentals->removeElement($rental)) {
             // set the owning side to null (unless already changed)
-            if ($booking->getIdUser() === $this) {
-                $booking->setIdUser(null);
+            if ($rental->getRenter() === $this) {
+                $rental->setRenter(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getAdmin(): ?Admin
-    {
-        return $this->admin;
-    }
-
-    public function setAdmin(Admin $admin): self
-    {
-        // set the owning side of the relation if necessary
-        if ($admin->getIdUser() !== $this) {
-            $admin->setIdUser($this);
-        }
-
-        $this->admin = $admin;
 
         return $this;
     }

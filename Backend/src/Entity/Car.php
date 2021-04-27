@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CarRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     normalizationContext={"groups"={"car:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"car:write"}, "swagger_definition_name"="Write"}
+ * )
  * @ORM\Entity(repositoryClass=CarRepository::class)
  */
 class Car
@@ -21,38 +27,33 @@ class Car
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"car:read", "car:write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"car:read", "car:write"})
      */
     private $image;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"car:read", "car:write"})
      */
     private $info;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"car:read", "car:write"})
      */
     private $stock;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"car:read", "car:write"})
      */
-    private $price_per_hour;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="id_car", orphanRemoval=true)
-     */
-    private $bookings;
-
-    public function __construct()
-    {
-        $this->bookings = new ArrayCollection();
-    }
+    private $pricePerHour;
 
     public function getId(): ?int
     {
@@ -109,42 +110,12 @@ class Car
 
     public function getPricePerHour(): ?int
     {
-        return $this->price_per_hour;
+        return $this->pricePerHour;
     }
 
-    public function setPricePerHour(int $price_per_hour): self
+    public function setPricePerHour(int $pricePerHour): self
     {
-        $this->price_per_hour = $price_per_hour;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Booking[]
-     */
-    public function getBookings(): Collection
-    {
-        return $this->bookings;
-    }
-
-    public function addBooking(Booking $booking): self
-    {
-        if (!$this->bookings->contains($booking)) {
-            $this->bookings[] = $booking;
-            $booking->setIdCar($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBooking(Booking $booking): self
-    {
-        if ($this->bookings->removeElement($booking)) {
-            // set the owning side to null (unless already changed)
-            if ($booking->getIdCar() === $this) {
-                $booking->setIdCar(null);
-            }
-        }
+        $this->pricePerHour = $pricePerHour;
 
         return $this;
     }

@@ -3,10 +3,10 @@ doctrine:
         driver: pdo_pgsql
         url: '%env(resolve:DATABASE_URL)%'
         dbname: degrp1406pn072
-        host: ec2-52-50-171-4.eu-west-1.compute.amazonaws.com
+        host: ec2-54-217-195-234.eu-west-1.compute.amazonaws.com
         port: 5432
-        user: inwuwzqinopavk
-        password: fc5853ce45111e733a43564e3ec29eba8eb3926b5d503fd94e49d6451a86e4c7
+        user: imblbtgbmocyzv
+        password: a63de4b4d56df2fdbd94dedc9458de92e14dc4d79102dc75e330d276bbf1f00d
         server-version: '13.2'
 
         # IMPORTANT: You MUST configure your server version,
