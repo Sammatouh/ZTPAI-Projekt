@@ -55,6 +55,26 @@ class User implements UserInterface
      */
     private $rentals;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=120)
+     */
+    private $surname;
+
+    /**
+     * @ORM\Column(type="string", length=24)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $join_time;
+
     public function __construct()
     {
         $this->rentals = new ArrayCollection();
@@ -167,6 +187,54 @@ class User implements UserInterface
                 $rental->setRenter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getJoinTime(): ?\DateTimeInterface
+    {
+        return $this->join_time;
+    }
+
+    public function setJoinTime(\DateTimeInterface $join_time): self
+    {
+        $this->join_time = $join_time;
 
         return $this;
     }
