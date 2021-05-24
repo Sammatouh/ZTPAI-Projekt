@@ -32,8 +32,10 @@ class Car
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"car:read", "car:write"})
+     * @var MediaObject|null
+     *
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $image;
 
