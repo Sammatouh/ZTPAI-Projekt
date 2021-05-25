@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,8 +20,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class AuthController extends AbstractController
 {
-    private $userRepository;
-    private $passwordEncoder;
+    private UserRepository $userRepository;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(UserRepository $userRepository,
                                 UserPasswordEncoderInterface $passwordEncoder)
@@ -33,6 +34,7 @@ class AuthController extends AbstractController
      * @Route("/register", name="register", methods="POST")
      * @param Request $request
      * @return JsonResponse
+     * @throws Exception
      */
     public function register(Request $request): JsonResponse
     {
@@ -54,7 +56,7 @@ class AuthController extends AbstractController
             ->setName($name)
             ->setSurname($surname)
             ->setPhone($phone)
-            ->setJoinTime(new \DateTime());
+            ->setJoinTime(new \DateTime("now", new \DateTimeZone("Europe/Warsaw")));
 
 
         $entityManager = $this->getDoctrine()->getManager();

@@ -4,16 +4,14 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CarRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     normalizationContext={"groups"={"car:read"}, "swagger_definition_name"="Read"},
- *     denormalizationContext={"groups"={"car:write"}, "swagger_definition_name"="Write"}
- * )
+ * @ApiResource(collectionOperations={
+ *         "post"={
+ *              "security"="is_granted('ROLE_ADMIN')"
+ *          }
+ *     })
  * @ORM\Entity(repositoryClass=CarRepository::class)
  */
 class Car
@@ -27,9 +25,23 @@ class Car
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"car:read", "car:write"})
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $info;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $stock;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $pricePerHour;
 
     /**
      * @var MediaObject|null
@@ -37,25 +49,23 @@ class Car
      * @ORM\ManyToOne(targetEntity=MediaObject::class)
      * @ORM\JoinColumn(nullable=true)
      */
-    private $image;
+    public $image;
 
     /**
-     * @ORM\Column(type="text")
-     * @Groups({"car:read", "car:write"})
+     * @return MediaObject|null
      */
-    private $info;
+    public function getImage(): ?MediaObject
+    {
+        return $this->image;
+    }
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"car:read", "car:write"})
+     * @param MediaObject|null $image
      */
-    private $stock;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"car:read", "car:write"})
-     */
-    private $pricePerHour;
+    public function setImage(?MediaObject $image): void
+    {
+        $this->image = $image;
+    }
 
     public function getId(): ?int
     {
@@ -70,18 +80,6 @@ class Car
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): self
-    {
-        $this->image = $image;
 
         return $this;
     }

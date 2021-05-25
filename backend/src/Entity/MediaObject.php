@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateMediaObjectAction;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,7 +62,6 @@ class MediaObject
     /**
      * @var string|null
      *
-     * @ApiProperty(iri="https://localhost/contentUrl")
      * @Groups({"media_object_read"})
      */
     public $contentUrl;
