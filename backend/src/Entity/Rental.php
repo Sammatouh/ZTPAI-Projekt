@@ -9,8 +9,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *     normalizationContext={"groups"={"rental:read"}, "swagger_definition_name"="Read"},
- *     denormalizationContext={"groups"={"rental:write"}, "swagger_definition_name"="Write"}
+ *     normalizationContext={
+ *          "groups"={"rental_read"}, 
+ *          "swagger_definition_name"="Read"
+ *     },
+ *     denormalizationContext={
+ *          "groups"={"rental_write"}, 
+ *          "swagger_definition_name"="Write"
+ *     },
  * )
  * @ORM\Entity(repositoryClass=RentalRepository::class)
  */
@@ -26,32 +32,32 @@ class Rental
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rentals")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"rental:read", "rental:write"})
+     * @Groups({"rental_read", "rental_write"})
      */
     private $renter;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"rental:read"})
+     * @Groups({"rental_read"})
      */
     private $value;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"rental:read","rental:write"})
+     * @Groups({"rental_read","rental_write"})
      */
     private $whenBooked;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"rental:read", "rental:write"})
+     * @Groups({"rental_read", "rental_write"})
      */
     private $whenDue;
 
     /**
      * @ORM\ManyToOne(targetEntity=Car::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"rental:read", "rental:write"})
+     * @Groups({"rental_read", "rental_write"})
      */
     private $car;
 

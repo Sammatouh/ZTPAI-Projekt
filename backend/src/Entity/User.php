@@ -14,8 +14,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     normalizationContext={"groups"={"user:read"}, "swagger_definition_name"="Read"},
- *     denormalizationContext={"groups"={"user:write"}, "swagger_definition_name"="Write"},
+ *     normalizationContext={
+ *          "groups"={"user_read"},
+ *          "swagger_definition_name"="Read"
+ *     },
+ *     denormalizationContext={
+ *          "groups"={"user_write"},
+ *          "swagger_definition_name"="Write"
+ *     },
  * )
  * @UniqueEntity(fields={"email"})
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -32,7 +38,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user:read", "user:write"})
+     * @Groups({"user_read", "user_write"})
      * @Assert\NotBlank()
      * @Assert\Email()
      */
@@ -46,32 +52,37 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups({"user:write"})
+     * @Groups({"user_write"})
      */
     private $password;
 
     /**
      * @ORM\OneToMany(targetEntity=Rental::class, mappedBy="renter", orphanRemoval=true)
+     * @Groups({"user_read"})
      */
     private $rentals;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups({"user_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=120)
+     * @Groups({"user_read"})
      */
     private $surname;
 
     /**
      * @ORM\Column(type="string", length=24)
+     * @Groups({"user_read"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"user_read"})
      */
     private $join_time;
 

@@ -5,12 +5,23 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CarRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(collectionOperations={
+ * @ApiResource(
+ *     normalizationContext={
+ *          "groups"={"car_read"},
+ *          "swagger_definition_name"="Read"
+ *     },
+ *     denormalizationContext={
+ *          "groups"={"car_write"},
+ *          "swagger_definition_name"="Write"
+ *     },
+ *     collectionOperations={
  *         "post"={
  *              "security"="is_granted('ROLE_ADMIN')"
- *          }
+ *          },
+ *          "get"
  *     })
  * @ORM\Entity(repositoryClass=CarRepository::class)
  */
@@ -25,21 +36,25 @@ class Car
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"car_read", "car_write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"car_read", "car_write"})
      */
     private $info;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"car_read", "car_write"})
      */
     private $stock;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"car_read", "car_write"})
      */
     private $pricePerHour;
 
@@ -48,6 +63,7 @@ class Car
      *
      * @ORM\ManyToOne(targetEntity=MediaObject::class)
      * @ORM\JoinColumn(nullable=true)
+     * @Groups({"car_read", "car_write"})
      */
     public $image;
 
