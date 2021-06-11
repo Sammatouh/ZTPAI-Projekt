@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     StyledFooter,
     Container,
@@ -10,10 +11,10 @@ const Footer = () => {
         <StyledFooter>
             <FooterText>Car rental service Rent<span style={{ color: "#D52A2A", fontSize: "1.8rem" }}>a</span>Car</FooterText>
             <Container>
-                <StyledLink to="/" exact>Home</StyledLink>
-                <StyledLink to="/contact-us">Contact Us</StyledLink>
-                <StyledLink to="/car-listing">Car Listing</StyledLink>
-                <StyledLink to="/about-us">About Us</StyledLink>
+                <StyledLink to="/">Home</StyledLink>
+                <StyledLink to="/contact">Contact Us</StyledLink>
+                <StyledLink to="/cars">Car Listing</StyledLink>
+                <StyledLink to="/about">About Us</StyledLink>
                 <StyledLink to="/#">Terms of service</StyledLink>
                 <StyledLink to="/#">Privacy policy</StyledLink>
                 <StyledLink to="/#">Cities</StyledLink>

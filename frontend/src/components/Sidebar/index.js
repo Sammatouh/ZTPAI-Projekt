@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     SidebarContainer,
     Icon,
@@ -28,11 +29,11 @@ const Sidebar = ({ isOpen, toggle }) => {
                         CONTACT
                     </SidebarLink>
                     <SidebarBtnWrap>
-                        <SidebarRoute to="/register">
-                            SIGN UP
-                        </SidebarRoute>
                         <SidebarRoute to="/login">
                             SIGN IN
+                        </SidebarRoute>
+                        <SidebarRoute to="/register">
+                            SIGN UP
                         </SidebarRoute>
                     </SidebarBtnWrap>
                 </SidebarMenu>

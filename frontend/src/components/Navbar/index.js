@@ -1,3 +1,4 @@
+import React from 'react'
 import {
     Nav,
     NavLogo,
@@ -25,11 +26,11 @@ const Navbar = ({ toggle }) => {
                     <NavbarLink to="/contact">
                         CONTACT
                     </NavbarLink>
-                    <NavBtnLink to="/register">
-                        Sign Up
-                    </NavBtnLink>
                     <NavBtnLink to="/login">
                         Sign In
+                    </NavBtnLink>
+                    <NavBtnLink to="/register">
+                        Sign Up
                     </NavBtnLink>
                 </NavMenu>
             </Nav>
