@@ -17,12 +17,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "groups"={"car_write"},
  *          "swagger_definition_name"="Write"
  *     },
- *     collectionOperations={
- *         "post"={
- *              "security"="is_granted('ROLE_ADMIN')"
- *          },
- *          "get"
- *     })
+ *     collectionOperations={"POST"},
+ *     itemOperations={"GET", "PUT", "PATCH", "DELETE"})
  * @ORM\Entity(repositoryClass=CarRepository::class)
  */
 class Car
@@ -33,6 +29,12 @@ class Car
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @Groups({"car_read", "car_write"})
+     */
+    private $brand;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -56,7 +58,7 @@ class Car
      * @ORM\Column(type="integer")
      * @Groups({"car_read", "car_write"})
      */
-    private $pricePerHour;
+    private $pricePerDay;
 
     /**
      * @var MediaObject|null
@@ -68,6 +70,18 @@ class Car
     public $image;
 
     /**
+     * @ORM\Column(type="string", length=50)
+     * @Groups({"car_read", "car_write"})
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"car_read", "car_write"})
+     */
+    private $doors;
+
+    /**
      * @return MediaObject|null
      */
     public function getImage(): ?MediaObject
@@ -77,10 +91,13 @@ class Car
 
     /**
      * @param MediaObject|null $image
+     * @return Car
      */
-    public function setImage(?MediaObject $image): void
+    public function setImage(?MediaObject $image): self
     {
         $this->image = $image;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -124,14 +141,50 @@ class Car
         return $this;
     }
 
-    public function getPricePerHour(): ?int
+    public function getPricePerDay(): ?int
     {
-        return $this->pricePerHour;
+        return $this->pricePerDay;
     }
 
-    public function setPricePerHour(int $pricePerHour): self
+    public function setPricePerDay(int $pricePerDay): self
     {
-        $this->pricePerHour = $pricePerHour;
+        $this->pricePerDay = $pricePerDay;
+
+        return $this;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(string $brand): self
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getDoors(): ?int
+    {
+        return $this->doors;
+    }
+
+    public function setDoors(int $doors): self
+    {
+        $this->doors = $doors;
 
         return $this;
     }

@@ -20,7 +20,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *         "post"={
  *             "controller"=CreateMediaObjectAction::class,
  *             "deserialize"=false,
- *             "security"="is_granted('ROLE_USER')",
+ *             "security"="is_granted('ROLE_ADMIN')",
  *             "validation_groups"={"Default", "media_object_create"},
  *             "openapi_context"={
  *                 "requestBody"={

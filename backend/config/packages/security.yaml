@@ -35,6 +35,11 @@ security:
             stateless: true
             anonymous: true
 
+        brands:
+            pattern: ^/api/brands
+            stateless: true
+            anonymous: true
+
         api:
             pattern: ^/api
             stateless: true
@@ -59,4 +64,6 @@ security:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/brands, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/cars, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

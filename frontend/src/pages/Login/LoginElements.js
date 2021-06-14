@@ -6,12 +6,8 @@ import {
 
 
 export const LoginBox = styled.div`
-    /* display: flex; */
     margin: auto;
     margin-top: 5rem;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     max-width: 400px;
     height: 90vh;
 `
@@ -20,9 +16,6 @@ export const LoginForm = styled(Form)`
     border: 1px solid #707070;
     padding: 2rem;
     background: rgba(255, 255, 255, 0.9) 0% 0% no-repeat padding-box;
-    /* display: flex; */
-    flex-direction: column;
-    align-items: center;
 `
 
 export const LoginFormGroup = styled(FormGroup)`

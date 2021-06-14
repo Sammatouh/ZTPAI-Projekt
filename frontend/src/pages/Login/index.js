@@ -26,6 +26,8 @@ const LoginPage = () => {
                 .then(
                     (response) => {
                         console.log(response.data);
+                        let userData = JSON.parse(atob(response.data.token.split('.')[1]));
+                        console.log(userData);
                     },
                     (error) => {
                         console.log(error);
