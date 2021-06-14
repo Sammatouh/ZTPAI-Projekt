@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { RegisterBox, RegisterForm, RegFormGroup, SubmitBtn } from './RegisterElements';
 import { Label, Input, FormFeedback } from 'reactstrap';
 import { Formik } from 'formik';
@@ -6,6 +7,11 @@ import * as Yup from 'yup';
 import axios from 'axios';
 
 const Register = () => {
+    const [regging, setRegging] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const history = useHistory();
+
     return (
         <Formik
             initialValues={{
@@ -39,7 +45,9 @@ const Register = () => {
                 acceptTerms: Yup.bool()
                     .oneOf([true], 'You must accept Terms & Conditions')
             })}
-            onSubmit={fields => {
+            onSubmit={(fields) => {
+                setRegging(true);
+                setMessage('');
                 let regData = {
                     'name': fields.name,
                     'surname': fields.surname,
@@ -47,66 +55,76 @@ const Register = () => {
                     'password': fields.password,
                     'phone': fields.phone
                 };
+                fields.name = '';
+                fields.surname = '';
+                fields.email = '';
+                fields.password = '';
+                fields.confPassword = '';
+                fields.phone = '';
+                fields.acceptTerms = false;
                 axios.post('https://localhost:8000/api/register', regData)
-                .then((response) => {
-                    console.log(response.data);
-                },
-                (error) => {
-                    console.log(error);
-                })
+                    .then((response) => {
+                        alert(response.data.message);
+                        history.push("/login");
+                    },
+                    (error) => {
+                        console.log(error);
+                        setMessage(error.response.data.message);
+                        setRegging(false);
+                    })
             }}>
-            { formik => (
+            {formik => (
                 <RegisterBox>
                     <RegisterForm onSubmit={formik.handleSubmit} method="POST">
                         <h2>Sign Up</h2>
                         <RegFormGroup>
                             <Label for="name">name</Label>
-                            <Input type="text" id="name" {...formik.getFieldProps('name')} className={(formik.errors.name && formik.touched.name ? 'is-invalid' : '')}/>
-                            { formik.touched.name && formik.errors.name ? (
+                            <Input type="text" id="name" {...formik.getFieldProps('name')} className={(formik.errors.name && formik.touched.name ? 'is-invalid' : '')} />
+                            {formik.touched.name && formik.errors.name ? (
                                 <FormFeedback>{formik.errors.name}</FormFeedback>
-                            ) : null }
+                            ) : null}
                         </RegFormGroup>
                         <RegFormGroup>
                             <Label for="surname">surname</Label>
-                            <Input type="text" id="surname" {...formik.getFieldProps('surname')} className={(formik.errors.surname && formik.touched.surname ? 'is-invalid' : '')}/>
-                            { formik.touched.surname && formik.errors.surname ? (
+                            <Input type="text" id="surname" {...formik.getFieldProps('surname')} className={(formik.errors.surname && formik.touched.surname ? 'is-invalid' : '')} />
+                            {formik.touched.surname && formik.errors.surname ? (
                                 <FormFeedback>{formik.errors.surname}</FormFeedback>
-                            ) : null }
+                            ) : null}
                         </RegFormGroup>
                         <RegFormGroup>
                             <Label for="email">email</Label>
-                            <Input type="email" id="email" {...formik.getFieldProps('email')} className={(formik.errors.email && formik.touched.email ? 'is-invalid' : '')}/>
-                            { formik.touched.email && formik.errors.email ? (
+                            <Input type="email" id="email" {...formik.getFieldProps('email')} className={(formik.errors.email && formik.touched.email ? 'is-invalid' : '')} />
+                            {formik.touched.email && formik.errors.email ? (
                                 <FormFeedback>{formik.errors.email}</FormFeedback>
-                            ) : null }
+                            ) : null}
                         </RegFormGroup>
                         <RegFormGroup>
                             <Label for="password">password</Label>
-                            <Input type="password" id="password" {...formik.getFieldProps('password')} className={(formik.errors.password && formik.touched.password ? 'is-invalid' : '')}/>
-                            { formik.touched.password && formik.errors.password ? (
+                            <Input type="password" id="password" {...formik.getFieldProps('password')} className={(formik.errors.password && formik.touched.password ? 'is-invalid' : '')} />
+                            {formik.touched.password && formik.errors.password ? (
                                 <FormFeedback>{formik.errors.password}</FormFeedback>
-                            ) : null }
+                            ) : null}
                         </RegFormGroup>
                         <RegFormGroup>
                             <Label for="confPassword">confirm password</Label>
-                            <Input type="password" id="confPassword" {...formik.getFieldProps('confPassword')} className={(formik.errors.confPassword && formik.touched.confPassword ? 'is-invalid' : '')}/>
-                            { formik.touched.confPassword && formik.errors.confPassword ? (
+                            <Input type="password" id="confPassword" {...formik.getFieldProps('confPassword')} className={(formik.errors.confPassword && formik.touched.confPassword ? 'is-invalid' : '')} />
+                            {formik.touched.confPassword && formik.errors.confPassword ? (
                                 <FormFeedback>{formik.errors.confPassword}</FormFeedback>
-                            ) : null }
+                            ) : null}
                         </RegFormGroup>
                         <RegFormGroup>
                             <Label for="phone">phone</Label>
-                            <Input type="text" id="phone" {...formik.getFieldProps('phone')} className={(formik.errors.phone && formik.touched.phone ? 'is-invalid' : '')}/>
-                            { formik.touched.phone && formik.errors.phone ? (
+                            <Input type="text" id="phone" {...formik.getFieldProps('phone')} className={(formik.errors.phone && formik.touched.phone ? 'is-invalid' : '')} />
+                            {formik.touched.phone && formik.errors.phone ? (
                                 <FormFeedback>{formik.errors.phone}</FormFeedback>
-                            ) : null }
+                            ) : null}
                         </RegFormGroup>
                         <RegFormGroup check>
-                            <Input type="checkbox" id="acceptTerms" {...formik.getFieldProps('acceptTerms')} className={(formik.errors.acceptTerms && formik.touched.acceptTerms ? 'is-invalid' : '')}/>
+                            <Input type="checkbox" id="acceptTerms" {...formik.getFieldProps('acceptTerms')} className={(formik.errors.acceptTerms && formik.touched.acceptTerms ? 'is-invalid' : '')} />
                             <Label check>Accept Terms & Conditions</Label>
-                            { formik.touched.acceptTerms && formik.errors.acceptTerms ? (
+                            {formik.touched.acceptTerms && formik.errors.acceptTerms ? (
                                 <FormFeedback>{formik.errors.acceptTerms}</FormFeedback>
-                            ) : null }
+                            ) : null}
                         </RegFormGroup>
                         <SubmitBtn type="submit">Sign Up</SubmitBtn>
                     </RegisterForm>

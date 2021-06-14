@@ -1,5 +1,6 @@
 import { FaBars } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import { Button } from 'reactstrap';
 import styled from 'styled-components';
 
 export const Nav = styled.nav`
@@ -77,4 +78,22 @@ export const NavBtnLink = styled(NavLink)`
         background: #fff;
         color: #010606;
     }
-`;
+`
+
+export const NavBtn = styled(Button)`
+    border-radius: 4px;
+    background: #D52A2A;
+    padding: 10px 22px;
+    color: #fff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin-left: 24px;
+    
+    &:hover {
+        transition: all 0.2s ease-in-out;
+        background: #fff;
+        color: #010606;
+    }
+`

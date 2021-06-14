@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 
 
 export const SidebarContainer = styled.aside`
@@ -84,6 +85,27 @@ export const SidebarRoute = styled(Link)`
     cursor: pointer;
     transition: all 0.2s ease-ease-in-out;
     text-decoration: none;
+
+    &:hover {
+        transition: all 0.2s ease-in-out;
+        background: #fff;
+        color: #D52A2A;
+    }
+`
+
+export const SidebarBtn = styled(Button)`
+    border-radius: 50px;
+    background: #D52A2A;
+    white-space: nowrap;
+    margin: 0.5rem;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-ease-in-out;
+    font-size: 1.4rem;
+    width: 50%;
 
     &:hover {
         transition: all 0.2s ease-in-out;
