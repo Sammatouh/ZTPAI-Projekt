@@ -4,6 +4,7 @@ import {
     Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button
 } from 'reactstrap';
+import { useHistory } from 'react-router-dom';
 
 const CarCard = styled(Card)`
     height: 180px;
@@ -47,6 +48,12 @@ const RentBttn = styled(Button)`
 `
 
 const CarDiv = ({item}) => {
+    const history = useHistory();
+
+    function onRent() {
+        history.push("/rent", item.id);
+    }
+
     return (
         <CarCard>
             <CarImg src={"https://localhost:8000" + item.image} />
@@ -57,7 +64,7 @@ const CarDiv = ({item}) => {
                 <BottomDiv>
                     <div>Price: {item.pricePerDay/100}$/day</div>
                     <StockDiv stock={item.stock}>Stock: {item.stock}</StockDiv>
-                    <RentBttn stock={item.stock}>Rent</RentBttn>
+                    <RentBttn stock={item.stock} onClick={onRent}>Rent</RentBttn>
                 </BottomDiv>
             </CardBody>
         </CarCard>

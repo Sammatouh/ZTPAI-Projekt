@@ -38,21 +38,9 @@ class Rental
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"rental_read"})
-     */
-    private $value;
-
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"rental_read","rental_write"})
-     */
-    private $whenBooked;
-
-    /**
-     * @ORM\Column(type="datetime")
      * @Groups({"rental_read", "rental_write"})
      */
-    private $whenDue;
+    private $value;
 
     /**
      * @ORM\ManyToOne(targetEntity=Car::class)
@@ -60,6 +48,32 @@ class Rental
      * @Groups({"rental_read", "rental_write"})
      */
     private $car;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Location::class)
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"rental_read", "rental_write"})
+     */
+    private $pickUpLocation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Location::class)
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"rental_read", "rental_write"})
+     */
+    private $dropOffLocation;
+
+    /**
+     * @ORM\Column(type="date")
+     * @Groups({"rental_read", "rental_write"})
+     */
+    private $whenBooked;
+
+    /**
+     * @ORM\Column(type="date")
+     * @Groups({"rental_read", "rental_write"})
+     */
+    private $whenDue;
 
     public function getId(): ?int
     {
@@ -90,6 +104,42 @@ class Rental
         return $this;
     }
 
+    public function getCar(): ?Car
+    {
+        return $this->car;
+    }
+
+    public function setCar(?Car $car): self
+    {
+        $this->car = $car;
+
+        return $this;
+    }
+
+    public function getPickUpLocation(): ?Location
+    {
+        return $this->pickUpLocation;
+    }
+
+    public function setPickUpLocation(?Location $pickUpLocation): self
+    {
+        $this->pickUpLocation = $pickUpLocation;
+
+        return $this;
+    }
+
+    public function getDropOffLocation(): ?Location
+    {
+        return $this->dropOffLocation;
+    }
+
+    public function setDropOffLocation(?Location $dropOffLocation): self
+    {
+        $this->dropOffLocation = $dropOffLocation;
+
+        return $this;
+    }
+
     public function getWhenBooked(): ?\DateTimeInterface
     {
         return $this->whenBooked;
@@ -110,18 +160,6 @@ class Rental
     public function setWhenDue(\DateTimeInterface $whenDue): self
     {
         $this->whenDue = $whenDue;
-
-        return $this;
-    }
-
-    public function getCar(): ?Car
-    {
-        return $this->car;
-    }
-
-    public function setCar(?Car $car): self
-    {
-        $this->car = $car;
 
         return $this;
     }

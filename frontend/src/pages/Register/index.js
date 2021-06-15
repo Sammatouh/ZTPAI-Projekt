@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { RegisterBox, RegisterForm, RegFormGroup, SubmitBtn } from './RegisterElements';
-import { Label, Input, FormFeedback } from 'reactstrap';
+import { Label, Input, FormFeedback, Spinner } from 'reactstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -64,6 +64,7 @@ const Register = () => {
                 fields.acceptTerms = false;
                 axios.post('https://localhost:8000/api/register', regData)
                     .then((response) => {
+                        setRegging(false);
                         alert(response.data.message);
                         history.push("/login");
                     },
@@ -127,6 +128,11 @@ const Register = () => {
                             ) : null}
                         </RegFormGroup>
                         <SubmitBtn type="submit">Sign Up</SubmitBtn>
+                        { regging ? (
+                            <Spinner color="secondary" />
+                        ) : (
+                            message ? message : ''
+                        )}
                     </RegisterForm>
                 </RegisterBox>
             )}

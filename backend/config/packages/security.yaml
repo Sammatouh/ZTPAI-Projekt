@@ -40,6 +40,23 @@ security:
             stateless: true
             anonymous: true
 
+        cars:
+            pattern: ^/api/cars
+            stateless: true
+            anonymous: true
+
+        locations:
+            pattern: ^/api/locations
+            stateless: true
+            anonymous: true
+
+        admin:
+            pattern: ^/admin
+            stateless: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
         api:
             pattern: ^/api
             stateless: true
@@ -61,9 +78,11 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/admin, roles: ROLE_ADMIN}
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/brands, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/cars, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
+        - { path: ^/api/cars, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/locations, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

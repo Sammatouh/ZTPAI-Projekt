@@ -47,7 +47,7 @@ const CarListing = () => {
         setLoadTypes(true);
         setLoadDoors(true);
 
-        axios.get('https://localhost:8000/cars')
+        axios.get('https://localhost:8000/api/cars')
         .then((response) => {
             setCars(response.data);
             setLoadCars(false);
@@ -74,7 +74,7 @@ const CarListing = () => {
         query += priceMaxFilter ? `priceMax=${priceMaxFilter}&` : '';
         query += avFilter ? `av=${avFilter}&` : '';
 
-        axios.get('https://localhost:8000/cars' + query)
+        axios.get('https://localhost:8000/api/cars' + query)
         .then((response) => {
             setCars(response.data);
             setLoadCars(false);

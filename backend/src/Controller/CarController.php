@@ -25,7 +25,7 @@ class CarController extends AbstractController
     }
 
     /**
-     * @Route("/cars/{id}", name="getCar", methods="GET")
+     * @Route("/api/cars/{id}", name="getCar", methods="GET")
      * @param $id
      * @return JsonResponse
      */
@@ -56,7 +56,7 @@ class CarController extends AbstractController
     }
 
     /**
-     * @Route("/cars", name="addCar", methods="POST")
+     * @Route("/admin/cars", name="addCar", methods="POST")
      * @param Request $request
      * @return JsonResponse
      */
@@ -84,7 +84,7 @@ class CarController extends AbstractController
     }
 
     /**
-     * @Route("/cars", name="getAllCars", methods="GET")
+     * @Route("/api/cars", name="getAllCars", methods="GET")
      * @param Request $request
      * @return JsonResponse
      */
