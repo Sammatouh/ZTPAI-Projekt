@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CarRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -80,6 +82,16 @@ class Car
      * @Groups({"car_read", "car_write"})
      */
     private $doors;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Rental::class, mappedBy="car")
+     */
+    private $rentals;
+
+    public function __construct()
+    {
+        $this->rentals = new ArrayCollection();
+    }
 
     /**
      * @return MediaObject|null
@@ -185,6 +197,36 @@ class Car
     public function setDoors(int $doors): self
     {
         $this->doors = $doors;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rental[]
+     */
+    public function getRentals(): Collection
+    {
+        return $this->rentals;
+    }
+
+    public function addRental(Rental $rental): self
+    {
+        if (!$this->rentals->contains($rental)) {
+            $this->rentals[] = $rental;
+            $rental->setCar($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRental(Rental $rental): self
+    {
+        if ($this->rentals->removeElement($rental)) {
+            // set the owning side to null (unless already changed)
+            if ($rental->getCar() === $this) {
+                $rental->setCar(null);
+            }
+        }
 
         return $this;
     }

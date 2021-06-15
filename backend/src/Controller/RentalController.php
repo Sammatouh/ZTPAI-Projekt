@@ -70,4 +70,26 @@ class RentalController extends AbstractController
 
         return $this->json(["message" => "Successfully made a reservation"], Response::HTTP_CREATED);
     }
+
+    /**
+     * @Route("/api/userRentals", name="getUserRentals", methods="GET")
+     * @return JsonResponse
+     */
+    public function getUserRentals(): JsonResponse
+    {
+        // retrieving the user from the token
+        $token = $this->tokenStorage->getToken();
+        $user = $token->getUser();
+        $userId = $user->getId();
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('r', 'c', 'u')
+            ->from('App:Rental', 'r')
+            ->join('App:Car', 'c', 'WITH', 'r.car = c')
+            ->join('App:User', 'u', 'WITH', 'r.renter = u');
+
+        $queryResult = $qb->getQuery()->getScalarResult();
+
+
+        return $this->json([$queryResult]);
+    }
 }

@@ -43,13 +43,6 @@ class Rental
     private $value;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Car::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"rental_read", "rental_write"})
-     */
-    private $car;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Location::class)
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"rental_read", "rental_write"})
@@ -74,6 +67,12 @@ class Rental
      * @Groups({"rental_read", "rental_write"})
      */
     private $whenDue;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Car::class, inversedBy="rentals")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $car;
 
     public function getId(): ?int
     {
@@ -100,18 +99,6 @@ class Rental
     public function setValue(int $value): self
     {
         $this->value = $value;
-
-        return $this;
-    }
-
-    public function getCar(): ?Car
-    {
-        return $this->car;
-    }
-
-    public function setCar(?Car $car): self
-    {
-        $this->car = $car;
 
         return $this;
     }
@@ -160,6 +147,18 @@ class Rental
     public function setWhenDue(\DateTimeInterface $whenDue): self
     {
         $this->whenDue = $whenDue;
+
+        return $this;
+    }
+
+    public function getCar(): ?Car
+    {
+        return $this->car;
+    }
+
+    public function setCar(?Car $car): self
+    {
+        $this->car = $car;
 
         return $this;
     }
